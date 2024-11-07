@@ -1,4 +1,4 @@
-# HotelCalifornia
+# HotelCalifornia☕🌱
 
 Bem-vindo ao repositório do projeto **HotelCalifornia**, desenvolvido como parte do curso de aceleração de carreira CUBO da empresa MV. Este projeto foi criado com **Java 11**☕ e **Spring Boot 2.7**🌱 e tem como objetivo fornecer uma solução web para o gerenciamento completo de operações de hotelaria.
 
@@ -38,17 +38,15 @@ Antes de iniciar o projeto, verifique se você possui os seguintes itens instala
 
 ## Instruções para Execução
 
-1. **Clone o repositório**
-   ```bash
+1. **Clone o repositório e entre na pasta dele**
    git clone https://github.com/Lucas-Pavao/HotelCalifornia.git
-   cd HotelCalifornia
 
-2. **Clone o repositório**
-  ```bash
+3. **Instale as dependências e compile o projeto**
+   ```bash
     mvn install
 
-3. **Clone o repositório**
-  ```bash
+4. **Execute a aplicação**
+   ```bash
     mvn spring-boot:run
 
 ## Acesso à Aplicação
