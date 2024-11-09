@@ -15,6 +15,8 @@
 	<description>Esse projeto é um projeto de Hotelaria, que é feito para praticar o spring</description>
 	<properties>
 		<java.version>11</java.version>
+		<maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -34,6 +36,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>1.18.24</version> <!-- Verifique a versão mais recente -->
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -59,7 +62,7 @@
 						</exclude>
 					</excludes>
 				</configuration>
-				<version>3.2.0</version>
+				<version>3.9.8</version>
 			</plugin>
 		</plugins>
 	</build>
