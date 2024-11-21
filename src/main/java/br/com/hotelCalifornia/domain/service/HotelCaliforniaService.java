@@ -21,6 +21,10 @@ public class HotelCaliforniaService {
         return repository.findById(id);
     }
 
+    public Optional<HotelCaliforniaModel> buscarPorCnpj(String cnpj) {
+        return repository.findByCnpj(cnpj);
+    }
+
     public HotelCaliforniaModel salvar(HotelCaliforniaModel hotel) {
         return repository.save(hotel);
     }

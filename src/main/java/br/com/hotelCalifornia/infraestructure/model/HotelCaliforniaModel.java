@@ -26,7 +26,7 @@ import javax.validation.constraints.*;
 public class HotelCaliforniaModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Gera IDs sequenciais
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name")
@@ -49,6 +49,5 @@ public class HotelCaliforniaModel {
     @Column(name = "cnpj")
     @NotNull
     @NotBlank(message = "CNPJ é obrigatório")
-    @Pattern(regexp = "\\d{14}", message = "O CNPJ deve conter exatamente 14 dígitos")
     private String cnpj;
 }

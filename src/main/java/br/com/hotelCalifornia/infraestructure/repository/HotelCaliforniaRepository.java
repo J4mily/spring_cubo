@@ -1,5 +1,6 @@
 package br.com.hotelCalifornia.infraestructure.repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,5 +10,7 @@ import br.com.hotelCalifornia.infraestructure.model.HotelCaliforniaModel;
 
 @Repository
 public interface HotelCaliforniaRepository extends JpaRepository<HotelCaliforniaModel, Long>{
-    
+
+    Optional<HotelCaliforniaModel> findByCnpj(String cnpj);
+
 }

@@ -30,6 +30,12 @@ public class HotelCaliforniaController {
         return hotel.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/cnpj/{cnpj}")
+    public ResponseEntity<HotelCaliforniaModel> getHotelByCnpj(@PathVariable String cnpj) {
+        Optional<HotelCaliforniaModel> hotel = service.buscarPorCnpj(cnpj);
+        return hotel.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<HotelCaliforniaModel> createHotel(@Valid @RequestBody HotelCaliforniaModel hotel) {
         HotelCaliforniaModel savedHotel = service.salvar(hotel);
