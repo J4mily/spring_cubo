@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class HotelCaliforniaService {
@@ -18,8 +17,12 @@ public class HotelCaliforniaService {
         return repository.findAll();
     }
 
-    public Optional<HotelCaliforniaModel> buscarPorId(UUID id) {
+    public Optional<HotelCaliforniaModel> buscarPorId(Long id) {
         return repository.findById(id);
+    }
+
+    public Optional<HotelCaliforniaModel> buscarPorCnpj(String cnpj) {
+        return repository.findByCnpj(cnpj);
     }
 
     public HotelCaliforniaModel salvar(HotelCaliforniaModel hotel) {
@@ -39,7 +42,7 @@ public class HotelCaliforniaService {
         }
     }
 
-    public boolean deletar(UUID id) {
+    public boolean deletar(Long id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
             return true;
