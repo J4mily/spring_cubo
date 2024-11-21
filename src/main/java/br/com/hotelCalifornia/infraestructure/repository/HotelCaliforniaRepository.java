@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import br.com.hotelCalifornia.infraestructure.model.HotelCaliforniaModel;
 
 @Repository
-public interface HotelCaliforniaRepository extends JpaRepository<HotelCaliforniaModel, UUID>{
+public interface HotelCaliforniaRepository extends JpaRepository<HotelCaliforniaModel, Long>{
     
 }
