@@ -1,7 +1,9 @@
 package br.com.hotelCalifornia.domain.service;
 
 import br.com.hotelCalifornia.infraestructure.model.HotelCaliforniaModel;
+import br.com.hotelCalifornia.infraestructure.model.dto.HotelCaliforniaDto;
 import br.com.hotelCalifornia.infraestructure.repository.HotelCaliforniaRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,33 @@ public class HotelCaliforniaService {
 
     @Autowired
     private HotelCaliforniaRepository repository;
+
+    public HotelCaliforniaModel salvar(HotelCaliforniaModel dto) {
+        try {
+
+            if(repository.findByCnpj(dto.getCnpj()).isPresent()){
+                throw new RuntimeException("Cnpj duplicado");
+            }
+
+            HotelCaliforniaDto hotel = toModel(dto);
+            HotelCaliforniaModel saveHotel = repository.save(dto);
+
+            return repository.save(dto);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Erro ao salvar o hotel: " + dto.getName(), e);
+        }
+    }
+
+    private HotelCaliforniaDto toModel(HotelCaliforniaModel hotel) {
+        HotelCaliforniaDto dto = new HotelCaliforniaDto();
+        dto.setName(hotel.getName());
+        dto.setLocal(hotel.getLocal());
+        dto.setCapacidade(hotel.getCapacidade());
+        dto.setCnpj(hotel.getCnpj());
+
+        BeanUtils.copyProperties(hotel, dto);
+        return dto;
+    }
 
     public List<HotelCaliforniaModel> listarTodos() {
         try {
@@ -37,14 +66,6 @@ public class HotelCaliforniaService {
             return repository.findByCnpj(cnpj);
         } catch (DataAccessException e) {
             throw new RuntimeException("Erro ao buscar hotel com o CNPJ: " + cnpj, e);
-        }
-    }
-
-    public HotelCaliforniaModel salvar(HotelCaliforniaModel hotel) {
-        try {
-            return repository.save(hotel);
-        } catch (DataAccessException e) {
-            throw new RuntimeException("Erro ao salvar o hotel: " + hotel.getName(), e);
         }
     }
 
