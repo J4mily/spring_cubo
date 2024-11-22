@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/hotel")
@@ -50,7 +49,16 @@ public class HotelCaliforniaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteHotel(@PathVariable Long id) {
-        if (service.deletar(id)) {
+        if (service.deletarPorId(id)) {
+            return ResponseEntity.ok().body("Deletado com sucesso");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/deletar/cnpj/{cnpj}")
+    public ResponseEntity<String> deleteHotelCnpj(@PathVariable String cnpj) {
+        if (service.deletarPorCnpj(cnpj)) {
             return ResponseEntity.ok().body("Deletado com sucesso");
         } else {
             return ResponseEntity.notFound().build();
