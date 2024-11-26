@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelCaliforniaService {
@@ -18,36 +19,43 @@ public class HotelCaliforniaService {
     @Autowired
     private HotelCaliforniaRepository repository;
 
-    public HotelCaliforniaModel salvar(HotelCaliforniaModel dto) {
+    public HotelCaliforniaDto  salvar(HotelCaliforniaDto dto) {
         try {
 
             if(repository.findByCnpj(dto.getCnpj()).isPresent()){
                 throw new RuntimeException("Cnpj duplicado");
             }
 
-            HotelCaliforniaDto hotel = toModel(dto);
-            HotelCaliforniaModel saveHotel = repository.save(dto);
+            HotelCaliforniaModel hotelModel = toModel(dto);
+            HotelCaliforniaModel savedHotel = repository.save(hotelModel);
 
-            return repository.save(dto);
+            return toDto(savedHotel);
         } catch (DataAccessException e) {
             throw new RuntimeException("Erro ao salvar o hotel: " + dto.getName(), e);
         }
     }
 
-    private HotelCaliforniaDto toModel(HotelCaliforniaModel hotel) {
-        HotelCaliforniaDto dto = new HotelCaliforniaDto();
-        dto.setName(hotel.getName());
-        dto.setLocal(hotel.getLocal());
-        dto.setCapacidade(hotel.getCapacidade());
-        dto.setCnpj(hotel.getCnpj());
+    // Conversão DTO -> Model
+    private HotelCaliforniaModel toModel(HotelCaliforniaDto dto) {
+        HotelCaliforniaModel model = new HotelCaliforniaModel();
+        BeanUtils.copyProperties(dto, model);
+        return model;
+    }
 
-        BeanUtils.copyProperties(hotel, dto);
+    // Conversão Model -> DTO
+    private HotelCaliforniaDto toDto(HotelCaliforniaModel model) {
+        HotelCaliforniaDto dto = new HotelCaliforniaDto();
+        dto.setName(model.getName());
+        dto.setLocal(model.getLocal());
+        dto.setCapacidade(model.getCapacidade());
+        dto.setCnpj(model.getCnpj());
         return dto;
     }
 
-    public List<HotelCaliforniaModel> listarTodos() {
+    public List<HotelCaliforniaDto> listarTodos() {
         try {
-            return repository.findAll();
+            List<HotelCaliforniaModel> hotels = repository.findAll();
+            return hotels.stream().map(this::toDto).collect(Collectors.toList());
         } catch (DataAccessException e) {
             throw new RuntimeException("Erro ao buscar todos os hotéis: " + e.getMessage(), e);
         }

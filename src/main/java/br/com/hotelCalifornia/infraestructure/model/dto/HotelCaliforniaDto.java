@@ -10,8 +10,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HotelCaliforniaDto {
-
-    private UUID id;
     private String name;
     private String local;
     private int capacidade;
