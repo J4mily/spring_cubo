@@ -33,7 +33,7 @@ public class HotelCaliforniaController {
             array = @ArraySchema(schema = @Schema(implementation = HotelCaliforniaDto.class)))),
     @ApiResponse(description = "Internal Error", responseCode = "500", content = {@Content})
     })
-    public List<HotelCaliforniaModel> hotelCaliforniaGetAll() {
+    public List<HotelCaliforniaDto> hotelCaliforniaGetAll() {
         return service.listarTodos();
     }
 
@@ -72,8 +72,8 @@ public class HotelCaliforniaController {
             @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
             @ApiResponse(description = "Internal Error", responseCode = "500", content = {@Content})
     })
-    public ResponseEntity<HotelCaliforniaModel> createHotel(@Valid @RequestBody HotelCaliforniaModel hotel) {
-        HotelCaliforniaModel savedHotel = service.salvar(hotel);
+    public ResponseEntity<HotelCaliforniaDto> createHotel(@Valid @RequestBody HotelCaliforniaDto hotel) {
+        HotelCaliforniaDto savedHotel = service.salvar(hotel);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedHotel);
     }
 
