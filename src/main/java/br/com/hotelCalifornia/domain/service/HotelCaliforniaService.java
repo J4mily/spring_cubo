@@ -3,10 +3,10 @@ package br.com.hotelCalifornia.domain.service;
 import br.com.hotelCalifornia.infraestructure.model.HotelCaliforniaModel;
 import br.com.hotelCalifornia.infraestructure.model.dto.HotelCaliforniaDto;
 import br.com.hotelCalifornia.infraestructure.repository.HotelCaliforniaRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import br.com.hotelCalifornia.converter.ConverterDto;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -26,36 +26,19 @@ public class HotelCaliforniaService {
                 throw new RuntimeException("Cnpj duplicado");
             }
 
-            HotelCaliforniaModel hotelModel = toModel(dto);
+            HotelCaliforniaModel hotelModel = ConverterDto.toModel(dto);
             HotelCaliforniaModel savedHotel = repository.save(hotelModel);
 
-            return toDto(savedHotel);
+            return ConverterDto.toDto(savedHotel);
         } catch (DataAccessException e) {
             throw new RuntimeException("Erro ao salvar o hotel: " + dto.getName(), e);
         }
     }
 
-    // Conversão DTO -> Model
-    private HotelCaliforniaModel toModel(HotelCaliforniaDto dto) {
-        HotelCaliforniaModel model = new HotelCaliforniaModel();
-        BeanUtils.copyProperties(dto, model);
-        return model;
-    }
-
-    // Conversão Model -> DTO
-    private HotelCaliforniaDto toDto(HotelCaliforniaModel model) {
-        HotelCaliforniaDto dto = new HotelCaliforniaDto();
-        dto.setName(model.getName());
-        dto.setLocal(model.getLocal());
-        dto.setCapacidade(model.getCapacidade());
-        dto.setCnpj(model.getCnpj());
-        return dto;
-    }
-
     public List<HotelCaliforniaDto> listarTodos() {
         try {
             List<HotelCaliforniaModel> hotels = repository.findAll();
-            return hotels.stream().map(this::toDto).collect(Collectors.toList());
+            return hotels.stream().map(ConverterDto::toDto).collect(Collectors.toList());
         } catch (DataAccessException e) {
             throw new RuntimeException("Erro ao buscar todos os hotéis: " + e.getMessage(), e);
         }
@@ -63,7 +46,7 @@ public class HotelCaliforniaService {
 
     public Optional<HotelCaliforniaDto> buscarPorId(Long id) {
         try {
-            return repository.findById(id).map(this::toDto);
+            return repository.findById(id).map(ConverterDto::toDto);
         } catch (DataAccessException e) {
             throw new RuntimeException("Erro ao buscar hotel com o ID: " + id, e);
         }
@@ -71,7 +54,7 @@ public class HotelCaliforniaService {
 
     public Optional<HotelCaliforniaDto> buscarPorCnpj(String cnpj) {
         try {
-            return repository.findByCnpj(cnpj).map(this::toDto);
+            return repository.findByCnpj(cnpj).map(ConverterDto::toDto);
         } catch (DataAccessException e) {
             throw new RuntimeException("Erro ao buscar hotel com o CNPJ: " + cnpj, e);
         }
@@ -79,7 +62,7 @@ public class HotelCaliforniaService {
 
     public Optional<HotelCaliforniaDto> atualizar(HotelCaliforniaDto dto) {
 
-        HotelCaliforniaModel hotelModel = toModel(dto);
+        HotelCaliforniaModel hotelModel = ConverterDto.toModel(dto);
 
         try {
             if (repository.existsById(hotelModel.getId())) {
@@ -90,7 +73,7 @@ public class HotelCaliforniaService {
                 hotelAtualizado.setCnpj(hotelModel.getCnpj());
 
                 HotelCaliforniaModel updateHotel = repository.save(hotelAtualizado);
-                return Optional.of(toDto(updateHotel));
+                return Optional.of(ConverterDto.toDto(updateHotel));
             } else {
                 return Optional.empty();
             }
@@ -114,7 +97,7 @@ public class HotelCaliforniaService {
     @Transactional
     public boolean deletarPorCnpj(String cnpj) {
         try {
-            Optional<HotelCaliforniaDto> hotel = repository.findByCnpj(cnpj).map(this::toDto);
+            Optional<HotelCaliforniaDto> hotel = repository.findByCnpj(cnpj).map(ConverterDto::toDto);
             if (hotel.isPresent()) {
                 repository.deleteByCnpj(cnpj);
                 return true;
