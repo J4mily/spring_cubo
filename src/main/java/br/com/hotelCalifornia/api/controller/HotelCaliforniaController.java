@@ -46,8 +46,8 @@ public class HotelCaliforniaController {
             @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
             @ApiResponse(description = "Internal Error", responseCode = "500", content = {@Content})
     })
-    public ResponseEntity<HotelCaliforniaModel> getHotelById(@PathVariable Long id) {
-        Optional<HotelCaliforniaModel> hotel = service.buscarPorId(id);
+    public ResponseEntity<HotelCaliforniaDto> getHotelById(@PathVariable Long id) {
+        Optional<HotelCaliforniaDto> hotel = service.buscarPorId(id);
         return hotel.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -59,8 +59,8 @@ public class HotelCaliforniaController {
             @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
             @ApiResponse(description = "Internal Error", responseCode = "500", content = {@Content})
     })
-    public ResponseEntity<HotelCaliforniaModel> getHotelByCnpj(@PathVariable String cnpj) {
-        Optional<HotelCaliforniaModel> hotel = service.buscarPorCnpj(cnpj);
+    public ResponseEntity<HotelCaliforniaDto> getHotelByCnpj(@PathVariable String cnpj) {
+        Optional<HotelCaliforniaDto> hotel = service.buscarPorCnpj(cnpj);
         return hotel.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
@@ -86,8 +86,8 @@ public class HotelCaliforniaController {
             @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
             @ApiResponse(description = "Internal Error", responseCode = "500", content = {@Content})
     })
-    public ResponseEntity<HotelCaliforniaModel> updateHotel(@RequestBody HotelCaliforniaModel hotel) {
-        Optional<HotelCaliforniaModel> updatedHotel = service.atualizar(hotel);
+    public ResponseEntity<HotelCaliforniaDto> updateHotel(@RequestBody HotelCaliforniaDto dto) {
+        Optional<HotelCaliforniaDto> updatedHotel = service.atualizar(dto);
         return updatedHotel.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 

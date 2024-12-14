@@ -3,6 +3,7 @@ package br.com.hotelCalifornia.infraestructure.repository;
 import java.util.Optional;
 import java.util.UUID;
 
+import br.com.hotelCalifornia.infraestructure.model.dto.HotelCaliforniaDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
