@@ -61,36 +61,41 @@ public class HotelCaliforniaService {
         }
     }
 
-    public Optional<HotelCaliforniaModel> buscarPorId(Long id) {
+    public Optional<HotelCaliforniaDto> buscarPorId(Long id) {
         try {
-            return repository.findById(id);
+            return repository.findById(id).map(this::toDto);
         } catch (DataAccessException e) {
             throw new RuntimeException("Erro ao buscar hotel com o ID: " + id, e);
         }
     }
 
-    public Optional<HotelCaliforniaModel> buscarPorCnpj(String cnpj) {
+    public Optional<HotelCaliforniaDto> buscarPorCnpj(String cnpj) {
         try {
-            return repository.findByCnpj(cnpj);
+            return repository.findByCnpj(cnpj).map(this::toDto);
         } catch (DataAccessException e) {
             throw new RuntimeException("Erro ao buscar hotel com o CNPJ: " + cnpj, e);
         }
     }
 
-    public Optional<HotelCaliforniaModel> atualizar(HotelCaliforniaModel hotel) {
+    public Optional<HotelCaliforniaDto> atualizar(HotelCaliforniaDto dto) {
+
+        HotelCaliforniaModel hotelModel = toModel(dto);
+
         try {
-            if (repository.existsById(hotel.getId())) {
-                HotelCaliforniaModel hotelAtualizado = repository.findById(hotel.getId()).get();
-                hotelAtualizado.setName(hotel.getName());
-                hotelAtualizado.setLocal(hotel.getLocal());
-                hotelAtualizado.setCapacidade(hotel.getCapacidade());
-                hotelAtualizado.setCnpj(hotel.getCnpj());
-                return Optional.of(repository.save(hotelAtualizado));
+            if (repository.existsById(hotelModel.getId())) {
+                HotelCaliforniaModel hotelAtualizado = repository.findById(hotelModel.getId()).get();
+                hotelAtualizado.setName(hotelModel.getName());
+                hotelAtualizado.setLocal(hotelModel.getLocal());
+                hotelAtualizado.setCapacidade(hotelModel.getCapacidade());
+                hotelAtualizado.setCnpj(hotelModel.getCnpj());
+
+                HotelCaliforniaModel updateHotel = repository.save(hotelAtualizado);
+                return Optional.of(toDto(updateHotel));
             } else {
                 return Optional.empty();
             }
         } catch (DataAccessException e) {
-            throw new RuntimeException("Erro ao atualizar o hotel com ID: " + hotel.getId(), e);
+            throw new RuntimeException("Erro ao atualizar o hotel com ID: " + hotelModel.getId(), e);
         }
     }
 
@@ -109,7 +114,7 @@ public class HotelCaliforniaService {
     @Transactional
     public boolean deletarPorCnpj(String cnpj) {
         try {
-            Optional<HotelCaliforniaModel> hotel = repository.findByCnpj(cnpj);
+            Optional<HotelCaliforniaDto> hotel = repository.findByCnpj(cnpj).map(this::toDto);
             if (hotel.isPresent()) {
                 repository.deleteByCnpj(cnpj);
                 return true;
