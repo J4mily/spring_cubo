@@ -39,7 +39,7 @@ Antes de iniciar o projeto, verifique se você possui os seguintes itens instala
 ## Instruções para Execução
 
 1. **Clone o repositório e entre na pasta dele**
-   git clone https://github.com/Lucas-Pavao/HotelCalifornia.git
+   git clone https://github.com/Franciely-Pereira/HotelCalifornia.git
 
 3. **Instale as dependências e compile o projeto**
    ```bash
